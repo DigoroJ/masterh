@@ -1,0 +1,16 @@
+h1{
+    text-align: center;
+    font-family: arial;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+col-sm{
+    margin-left: .5rem;
+}
+
+button{
+    margin-left:10rem;
+    border: 6px solid #FFFFFF;
+  
+}
