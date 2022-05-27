@@ -174,6 +174,114 @@ const getAddress = (req, res) => {
     });
 };
 
+const addRequest = (req, res) => {
+    const {client_id, service_id, event_date}= req.body
+
+    pool.query(queries.addRequest, [client_id, service_id, event_date], (error, results) => {
+        if(error){
+            res.status(500).json({error: 'invalid input'})
+            throw error;
+        }
+        else{
+            res.status(200).json("Request added successfully");
+        }
+    });
+};
+
+const getRequests = (req, res) => {
+    pool.query(queries.getRequests,(error, results) => {
+        if(this.error){
+            console.log("error:"+error);
+            res.status(404).send(error);
+            throw error;
+        }
+        res.status(200).json(results.rows);
+    });
+};
+
+const updateStatus = (req, res) => {
+    const {id, status} =req.body;
+
+    pool.query(queries.updateStatus,[status, id], (error, results)=> {
+        if(error){
+            res.status(500).json({error:'Invalid input'});
+            throw error;
+        }else{
+            res.status(200).json("Status updated succesfully!")
+        }
+    });
+
+};
+
+const updatePic = (req, res) => {
+    const {id, name, description, image, category} =req.body;
+
+    pool.query(queries.updateStatus,[name,description, image, category,id], (error, results)=> {
+        if(error){
+            res.status(500).json({error:'Invalid input'});
+            throw error;
+        }else{
+            res.status(200).json("Picture updated succesfully!")
+        }
+    });
+
+};
+
+const getPic = (req, res) => {
+    const {category}= req.params;
+    pool.query(queries.getPic,[category],(error, results) => {
+        if(this.error){
+            console.log("error:"+error);
+            res.status(404).send(error);
+            throw error;
+        }
+        res.status(200).json(results.rows);
+    });
+};
+
+const getAllPics = (req, res) => {
+    pool.query(queries.getAllPics,(error, results) => {
+        if(this.error){
+            console.log("error:"+error);
+            res.status(404).send(error);
+            throw error;
+        }
+        res.status(200).json(results.rows);
+    });
+};
+
+const addPic = (req, res) => {
+    const {name, description, image, category}= req.body
+
+    pool.query(queries.addPic, [name, description, image, category], (error, results) => {
+        if(error){
+            res.status(500).json({error: 'invalid input'})
+            throw error;
+        }
+        else{
+            res.status(200).json("Picture added successfully");
+        } 
+    });
+};
+
+const deletePic = (req, res) =>{
+    const id = parseInt(req.params.id);
+
+    pool.query(queries.getPicById,[id],(error, results)=>{
+        const noPic = !results.rows.length;
+        if(noPic){
+            res.status(404).json("Oicture does not exist in the database.");
+        }else{
+            pool.query(queries.deleteService,[id],(error, results)=>{
+                if(error) throw error;
+                res.status(200).json("Picture removed successfully");
+        });
+        }
+    });
+}
+
+
+
 module.exports = {
     getServices,
     addServices,
@@ -181,6 +289,14 @@ module.exports = {
     addClient,
     clientLogin,
     addAddress,
-    getAddress
+    getAddress,
+    addRequest,
+    getRequests,
+    updateStatus,
+    updatePic,
+    addPic,
+    getPic,
+    deletePic,
+    getAllPics
 
 }
