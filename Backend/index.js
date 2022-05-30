@@ -3,7 +3,7 @@
  const cors = require('cors');
  const userRouter = require('./routes/routes');
 
- const port =4202
+ const port = process.env.PORT || 4202;
 
  var corsOption ={
     origin: 'http://localhost:4200',
